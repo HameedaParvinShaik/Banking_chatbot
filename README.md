@@ -1,29 +1,49 @@
-# Banking_chatbot
-# 💬 AWS Banking Chatbot with OTP Verification
+# 💬 Banking Chatbot using AWS Lex, Lambda, and SES
 
-This project is a *Banking Chatbot* built using *Amazon Lex, **Lambda, **SES, **DynamoDB, **S3, and **CloudFormation*.  
-It includes intents like *Check Balance, **Transfer, **Payment, **Welcome, **Fallback, and **Thank You*,  
-and features *OTP verification via Amazon SES* for secure access.
-
----
-
-## 🧩 Workflow
-1. User interacts with *Lex chatbot* (CloudFront-hosted UI).  
-2. Lex triggers the *Lambda function* to process user intents.  
-3. For secure actions, *SES sends OTP* to the verified email address.  
-4. OTPs are stored in *DynamoDB* for 5 minutes.  
-5. Lambda verifies the OTP → responds to Lex.  
-6. All AWS resources are deployed automatically through *CloudFormation*.
+An AI-powered *Banking Chatbot* built using *Amazon Lex V2, **AWS Lambda, **DynamoDB, **SES, and **CloudFormation*.  
+It supports *OTP verification via email, **secure balance inquiry, **money transfer, **payments, and **thank you / fallback intents*.  
+The project is fully deployed with *CloudFront + S3 web UI* integration.
 
 ---
 
-## 🛠 AWS Services Used
-- *Amazon Lex* – Chatbot
-- *AWS Lambda* – Backend logic
-- *Amazon SES* – OTP email service
-- *Amazon DynamoDB* – OTP storage
-- *Amazon S3* – Static site & Lambda storage
-- *Amazon CloudFront* – Web UI hosting
-- *AWS CloudFormation* – Deployment automation
+## 🚀 Project Overview
+
+This chatbot acts as a *virtual banking assistant* that can:
+- 💵 Check account balance  
+- 💳 Perform money transfers and payments  
+- 📩 Send and verify OTPs via email (for security)  
+- 👋 Greet users with a welcome message  
+- 🧠 Handle fallback and thank-you responses  
+
+Built end-to-end on *AWS Cloud* with a simple web interface for interaction.
 
 ---
+
+## 🧠 Architecture Workflow
+
+1. *User* interacts with the web UI hosted on *Amazon S3* (served via *CloudFront*).  
+2. *Amazon Lex Bot* receives the user’s input and triggers *AWS Lambda*.  
+3. *Lambda Function*:
+   - Generates and sends OTP to the user’s verified email (via *Amazon SES*).  
+   - Verifies OTP within 5 minutes using *DynamoDB*.  
+   - Returns banking responses to Lex.  
+4. *CloudFormation Template* automates deployment of all backend resources.  
+5. *Lex Web UI* configuration connects the chatbot to the frontend securely.
+
+---
+
+## 🧩 AWS Services Used
+
+| Service | Purpose |
+|----------|----------|
+| *Amazon Lex V2* | Conversational interface and NLP engine |
+| *AWS Lambda* | Handles OTP generation, verification, and logic |
+| *Amazon DynamoDB* | Temporary OTP storage (expires after 5 minutes) |
+| *Amazon SES* | Sends OTP to verified email addresses |
+| *Amazon S3* | Hosts static web UI files |
+| *Amazon CloudFront* | Distributes the web UI globally (HTTPS) |
+| *AWS CloudFormation* | Infrastructure as Code (deployment automation) |
+
+---
+
+## 🗂 Folder Structure
