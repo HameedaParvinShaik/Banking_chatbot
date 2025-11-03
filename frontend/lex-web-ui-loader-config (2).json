@@ -1,84 +1,29 @@
 {
   "region": "ap-southeast-2",
   "cognito": {
-    "poolId": "ap-southeast-2:61c82402-2839-4937-b458-2a3d1dae9691",
-    "appUserPoolClientId": "6ppf9vqi9fohhlkh05rbjmbeub",
-    "appUserPoolName": "ap-southeast-2_zRyjeAEET",
-    "appDomainName": "lexkwebkuikidentitypoolconfigkbbjgcfbdlulmj301858754470.auth.ap-southeast-2.amazoncognito.com",
+    "poolId": "<COGNITO_POOL_ID>",
+    "appUserPoolClientId": "<COGNITO_APP_CLIENT_ID>",
+    "appUserPoolName": "<COGNITO_POOL_NAME>",
+    "appDomainName": "<COGNITO_APP_DOMAIN>",
     "aws_cognito_region": "ap-southeast-2",
     "region": "ap-southeast-2"
   },
-  "connect": {
-    "contactFlowId": "",
-    "instanceId": "",
-    "apiGatewayEndpoint": "",
-    "promptForNameMessage": "Before starting a live chat, please tell me your name?",
-    "waitingForAgentMessage": "Thanks for waiting. An agent will be with you when available.",
-    "waitingForAgentMessageIntervalSeconds": "60",
-    "agentJoinedMessage": "{Agent} has joined.",
-    "agentLeftMessage": "{Agent} has left.",
-    "chatEndedMessage": "Chat ended.",
-    "attachChatTranscript": "false",
-    "liveChatTerms": "live chat",
-    "endLiveChatUtterance": "",
-    "transcriptMessageDelayInMsec": "150",
-    "transcriptRedactRegex": ""
-  },
   "lex": {
-    "v2BotId": "DSQRMFUN7G",
-    "v2BotAliasId": "TSTALIASID",
+    "v2BotId": "<LEX_BOT_ID>",
+    "v2BotAliasId": "<LEX_BOT_ALIAS_ID>",
     "v2BotLocaleId": "en_US",
     "initialText": "👋 Hi! I’m your Banking Bot 💰💬. How can I help you today?",
     "initialSpeechInstruction": "Say 'Hi' to start chatting with your Banking Bot.",
-    "initialUtterance": "",
-    "reInitSessionAttributesOnRestart": false,
-    "region": "ap-southeast-2",
-    "retryOnLexPostTextTimeout": "false",
-    "retryCountPostTextTimeout": "1",
-    "allowStreamingResponses": false,
-    "streamingWebSocketEndpoint": "",
-    "streamingDynamoDbTable": ""
+    "region": "ap-southeast-2"
   },
   "ui": {
-    "parentOrigin": "https://d1u6ci2oxk04ae.cloudfront.net",
-    "toolbarTitle": "Banking Bot 💰",
-    "toolbarLogo": "",
-    "toolbarStartLiveChatLabel": "Start Live Chat",
-    "toolbarEndLiveChatLabel": "End Live Chat",
-    "toolbarStartLiveChatIcon": "people_alt",
-    "toolbarEndLiveChatIcon": "call_end",
-    "positiveFeedbackIntent": "Thumbs up",
-    "negativeFeedbackIntent": "Thumbs down",
-    "helpIntent": "Help",
-    "minButtonContent": "",
-    "avatarImageUrl": "",
-    "backButton": false,
-    "messageMenu": false,
-    "hideButtonMessageBubble": true,
-    "enableLogin": false,
-    "enableLiveChat": false,
-    "forceLogin": false,
-    "enableUpload": false,
-    "uploadS3BucketName": "",
-    "AllowSuperDangerousHTMLInMessage": true,
-    "shouldDisplayResponseCardTitle": false,
-    "saveHistory": false,
-    "helpContent": {},
-    "enableSFX": false,
-    "hideInputFieldsForButtonResponse": false,
-    "pushInitialTextOnRestart": false,
-    "directFocusToBotInput": true,
-    "showDialogStateIcon": false
+    "parentOrigin": "<CLOUDFRONT_URL>",
+    "toolbarTitle": "Banking Bot 💰"
   },
-  "polly": {
-    "voiceId": "Salli"
-  },
-  "recorder": {
-    "preset": "speech_recognition"
-  },
+  "polly": { "voiceId": "Salli" },
+  "recorder": { "preset": "speech_recognition" },
   "iframe": {
-    "iframeOrigin": "https://d1u6ci2oxk04ae.cloudfront.net",
-    "shouldLoadIframeMinimized": false,
+    "iframeOrigin": "<CLOUDFRONT_URL>",
     "iframeSrcPath": "/index.html#/?lexWebUiEmbed=true"
   }
 }
