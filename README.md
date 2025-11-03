@@ -46,4 +46,5 @@ Built end-to-end on *AWS Cloud* with a simple web interface for interaction.
 
 ---
 
-## 🗂 Folder Structure
+
+
