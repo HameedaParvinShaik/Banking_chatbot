@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
+    <title>Banking Bot Demo</title>
+    <!-- bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
+          integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+      /* Gradient header for attention */
+      h1 {
+        font-size: 2.5em;
+        font-weight: bold;
+        background: linear-gradient(90deg, #1a73e8, #34a853, #fbbc05);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+      }
+      body {
+        background-color: #f5f5f5;
+      }
+      .panel-heading {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container-fluid">
+      <h1>Banking Bot 💰</h1>
+      <p class="lead">
+        Use the chatbot UI to drive your Banking Bot. All Lex dialog, slots, and session data will be displayed below.
+      </p>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Send "Hi" to Banking Bot</div>
+            <div class="panel-body">
+              <button id="send-intent" type="button" class="btn btn-success" disabled>
+                Say Hi to Banking Bot
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Lex panels -->
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Lex Dialog State</div>
+            <div class="panel-body"><strong>dialogState:</strong> <span id="dialog-state"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Lex Slots</div>
+            <div class="panel-body"><div id="slots"></div></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Lex Intent Name</div>
+            <div class="panel-body"><strong>Intent Name:</strong> <span id="intent-name"></span></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Lex Session Attributes</div>
+            <div class="panel-body"><pre id="session-attributes"></pre></div>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-primary">
+            <div class="panel-heading">Lex Response Card</div>
+            <div class="panel-body"><pre id="response-card"></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-6">
+          <div class="panel panel-warning">
+            <div class="panel-heading">NOTE</div>
+            <div class="panel-body">
+              <p>This application was created using the
+              <a href="https://github.com/awslabs/aws-lex-web-ui">aws-lex-web-ui</a> project.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- jquery and bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
+            integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
+    <!-- Lex Web UI Loader -->
+    <script src="lex-web-ui-loader.js"></script>
+
+    <script>
+      var loaderOpts = {
+        baseUrl: '/',
+        shouldLoadConfigFromEvent: true,
+        shouldLoadMinDeps: true,
+      }
+
+      var iframeLoader = new ChatBotUiLoader.IframeLoader(loaderOpts);
+
+      var chatbotUiconfig = {};
+      iframeLoader.load(chatbotUiconfig)
+        .then(function () {
+          iframeLoader.api.ping();
+          $('#send-intent').prop('disabled', false);
+
+          // Auto-send "Hi" when page loads
+          sendUtterance('Hi');
+        })
+        .catch(function (error) {
+          console.error('chatbot UI failed to load', error);
+        });
+
+      function sendUtterance(utterance) {
+        function isBotMinimized() {
+          var elementId = iframeLoader.options.elementId;
+          var minimizedClass = 'lex-web-ui-iframe--minimize';
+          return $('#' + elementId).hasClass(minimizedClass);
+        }
+        return Promise.resolve()
+          .then(function () {
+            return !isBotMinimized() || iframeLoader.api.toggleMinimizeUi();
+          })
+          .then(function () {
+            return iframeLoader.api.postText(utterance);
+          })
+          .then(function () { console.log('message successfully sent'); })
+          .catch(function (err) { console.error('error sending message', err); });
+      }
+
+      $(document).ready(function() {
+        $('#send-intent').on('click', function(event) {
+          event.preventDefault();
+          sendUtterance('Hi');
+        });
+
+        $(document).on('updatelexstate', function(evt) {
+          var slots = evt.detail?.state?.slots || {};
+          var dialogState = evt.detail?.state?.dialogState || '';
+          var intentName = evt.detail?.state?.intentName || '';
+          var sessionAttributes = evt.detail?.state?.sessionAttributes || {};
+          var responseCard = evt.detail?.state?.responseCard || {};
+
+          $('#dialog-state').text(dialogState);
+          $('#intent-name').text(intentName);
+          $('#session-attributes').text(JSON.stringify(sessionAttributes, null, 2));
+          $('#response-card').text(JSON.stringify(responseCard, null, 2));
+
+          var $slotsContainerReplacement = $('<div>', { id: 'slots' });
+          Object.keys(slots).forEach(function(slotName, index) {
+            var slotValue = JSON.stringify(slots[slotName]);
+            var $slotDiv = $('<div>', { id: 'slot-' + index });
+            var $slotName = $('<strong>').text(slotName + ': ');
+            var $slotValue = $('<span>').text(slotValue);
+            $slotDiv.append($slotName).append($slotValue);
+            $slotsContainerReplacement.append($slotDiv);
+          });
+          $('#slots').replaceWith($slotsContainerReplacement);
+        });
+      });
+    </script>
+  </body>
+</html>
