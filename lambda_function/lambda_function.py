@@ -4,12 +4,12 @@ import random
 import time
 import decimal
 
-# Environment Variables
-OTP_TABLE = os.environ.get('OTP_TABLE', 'BankingBot-OTP')
-FROM_EMAIL = os.environ.get('FROM_EMAIL', 'hameedaparvins@gmail.com')
-RECEIVER_EMAIL = os.environ.get('RECEIVER_EMAIL', 'hameedaparvin36@gmail.com')
+# ---------------- Environment Variables ----------------
+OTP_TABLE = os.environ.get('OTP_TABLE', '<YOUR_OTP_TABLE_NAME>')
+FROM_EMAIL = os.environ.get('FROM_EMAIL', '<YOUR_EMAIL>')
+RECEIVER_EMAIL = os.environ.get('RECEIVER_EMAIL', '<RECEIVER_EMAIL>')
 
-# AWS Resources
+# ---------------- AWS Resources ----------------
 dynamodb = boto3.resource('dynamodb')
 ses = boto3.client('ses', region_name='ap-southeast-2')
 
