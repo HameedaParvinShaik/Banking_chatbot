@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" type="image/png" href="data:image/png;base64,iVBORw0KGgo=">
     <title>Banking Bot Demo</title>
-    <!-- bootstrap CSS -->
+
+    <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" 
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
     <style>
-      /* Gradient header for attention */
       h1 {
         font-size: 2.5em;
         font-weight: bold;
@@ -32,6 +33,7 @@
         Use the chatbot UI to drive your Banking Bot. All Lex dialog, slots, and session data will be displayed below.
       </p>
 
+      <!-- Send Hi Button -->
       <div class="row">
         <div class="col-md-6">
           <div class="panel panel-primary">
@@ -45,7 +47,7 @@
         </div>
       </div>
 
-      <!-- Lex panels -->
+      <!-- Lex Dialog Panels -->
       <div class="row">
         <div class="col-md-6">
           <div class="panel panel-primary">
@@ -54,6 +56,7 @@
           </div>
         </div>
       </div>
+
       <div class="row">
         <div class="col-md-6">
           <div class="panel panel-primary">
@@ -62,6 +65,7 @@
           </div>
         </div>
       </div>
+
       <div class="row">
         <div class="col-md-6">
           <div class="panel panel-primary">
@@ -70,6 +74,7 @@
           </div>
         </div>
       </div>
+
       <div class="row">
         <div class="col-md-6">
           <div class="panel panel-primary">
@@ -78,6 +83,7 @@
           </div>
         </div>
       </div>
+
       <div class="row">
         <div class="col-md-6">
           <div class="panel panel-primary">
@@ -92,7 +98,7 @@
           <div class="panel panel-warning">
             <div class="panel-heading">NOTE</div>
             <div class="panel-body">
-              <p>This application was created using the
+              <p>This application uses the
               <a href="https://github.com/awslabs/aws-lex-web-ui">aws-lex-web-ui</a> project.</p>
             </div>
           </div>
@@ -100,7 +106,7 @@
       </div>
     </div>
 
-    <!-- jquery and bootstrap JS -->
+    <!-- jQuery and Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js"
             integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"
@@ -110,21 +116,22 @@
     <script src="lex-web-ui-loader.js"></script>
 
     <script>
+      // Loader config
       var loaderOpts = {
         baseUrl: '/',
         shouldLoadConfigFromEvent: true,
         shouldLoadMinDeps: true,
-      }
+      };
 
       var iframeLoader = new ChatBotUiLoader.IframeLoader(loaderOpts);
-
       var chatbotUiconfig = {};
+
       iframeLoader.load(chatbotUiconfig)
         .then(function () {
           iframeLoader.api.ping();
           $('#send-intent').prop('disabled', false);
 
-          // Auto-send "Hi" when page loads
+          // Auto-send "Hi"
           sendUtterance('Hi');
         })
         .catch(function (error) {
@@ -132,20 +139,10 @@
         });
 
       function sendUtterance(utterance) {
-        function isBotMinimized() {
-          var elementId = iframeLoader.options.elementId;
-          var minimizedClass = 'lex-web-ui-iframe--minimize';
-          return $('#' + elementId).hasClass(minimizedClass);
-        }
         return Promise.resolve()
-          .then(function () {
-            return !isBotMinimized() || iframeLoader.api.toggleMinimizeUi();
-          })
-          .then(function () {
-            return iframeLoader.api.postText(utterance);
-          })
-          .then(function () { console.log('message successfully sent'); })
-          .catch(function (err) { console.error('error sending message', err); });
+          .then(() => iframeLoader.api.postText(utterance))
+          .then(() => console.log('message successfully sent'))
+          .catch(err => console.error('error sending message', err));
       }
 
       $(document).ready(function() {
@@ -166,16 +163,16 @@
           $('#session-attributes').text(JSON.stringify(sessionAttributes, null, 2));
           $('#response-card').text(JSON.stringify(responseCard, null, 2));
 
-          var $slotsContainerReplacement = $('<div>', { id: 'slots' });
-          Object.keys(slots).forEach(function(slotName, index) {
+          // Update slots dynamically
+          var $slotsContainer = $('<div>', { id: 'slots' });
+          Object.keys(slots).forEach((slotName, index) => {
             var slotValue = JSON.stringify(slots[slotName]);
             var $slotDiv = $('<div>', { id: 'slot-' + index });
-            var $slotName = $('<strong>').text(slotName + ': ');
-            var $slotValue = $('<span>').text(slotValue);
-            $slotDiv.append($slotName).append($slotValue);
-            $slotsContainerReplacement.append($slotDiv);
+            $slotDiv.append($('<strong>').text(slotName + ': '))
+                    .append($('<span>').text(slotValue));
+            $slotsContainer.append($slotDiv);
           });
-          $('#slots').replaceWith($slotsContainerReplacement);
+          $('#slots').replaceWith($slotsContainer);
         });
       });
     </script>
